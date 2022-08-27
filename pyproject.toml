@@ -1,0 +1,98 @@
+# See https://gitlab.liris.cnrs.fr/pagoda/tools/mkdocs_template/-/blob/master/user_config/pyproject.toml
+
+# -----------------------------------------------------------------------------
+# Pytest configuration
+# https://docs.pytest.org/en/latest/customize.html?highlight=pyproject#pyproject-toml
+
+[tool.pytest.ini_options]
+log_cli = true
+# log_cli_level = "DEBUG"
+addopts = "--cov=starter --doctest-modules"
+testpaths = [
+    "tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:tensorflow.*",
+    "ignore::DeprecationWarning:tensorboard.*",
+    "ignore::DeprecationWarning:matplotlib.*",
+    "ignore::DeprecationWarning:flatbuffers.*",
+]
+
+# -----------------------------------------------------------------------------
+# Black (Option-less formatter) configuration
+# https://black.readthedocs.io/en/stable/index.html
+
+[tool.black]
+line-length = 99
+target-version = ["py38"]
+include = '\.pyi?$|\.ipynb'
+
+# -----------------------------------------------------------------------------
+# For sorting imports
+# This is used by VS Code to sort imports
+# https://code.visualstudio.com/docs/python/editing#_sort-imports
+# https://timothycrosley.github.io/isort/
+
+[tool.isort]
+  # Profile
+  # Base profile type to use for configuration. Profiles include: black, django,
+  # pycharm, google, open_stack, plone, attrs, hug. As well as any shared profiles.
+  # Default: ``
+profile = "black"
+  # Treat project as a git repository and ignore files listed in .gitignore
+  # Default: `False`
+skip_gitignore = true
+  # The max length of an import line (used for wrapping long imports).
+  # Default: `79`
+line_length = 99
+
+# -----------------------------------------------------------------------------
+# setuptools
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "starter"
+description = "Starter pack for Python."
+readme = "README.md"
+requires-python = ">=3.6"
+# keywords = ["one", "two"]
+license = {text = "Apache-2.0"}
+classifiers = [                             # https://pypi.org/classifiers/
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3 :: Only",
+    "Intended Audience :: Information Technology",
+    "Operating System :: Unix",
+]
+dependencies = [
+    "pyyaml~=6.0",
+    "tqdm~=4.62.3",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+lint = ["black~=22.3.0", "flake8~=4.0.1"]
+all = [
+    "flaky~=3.7.0",
+    "mypy~=0.931",
+    "pytest-cov~=3.0.0",
+    "pytest~=6.2.5",
+    "furo~=2022.4.7",                       # Sphinx theme (nice looking, with dark mode)
+    "myst-parser>=0.16.1,<=0.17.0",         # 0.17.0 dropped py36 support
+    "sphinx-autobuild~=2021.3.14",
+    "sphinx-copybutton~=0.5.0",
+    "sphinx>=4.3.1,<=4.5.0",                # 4.3.1 avoids 'importlib-metadata>=4.4' dependency present from 4.4.0 onwards
+    "sphinx_rtd_theme~=1.0.0",              # Sphinx theme
+]
+
+[project.scripts]
+starter = "starter.scripts.example:main_cli"
+
+[tool.setuptools.dynamic]
+version = {attr = "starter.version.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
