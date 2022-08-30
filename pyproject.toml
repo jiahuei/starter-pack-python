@@ -75,17 +75,23 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 lint = ["black~=22.3.0", "flake8~=4.0.1"]
-all = [
+test = [
     "flaky~=3.7.0",
     "mypy~=0.931",
     "pytest-cov~=3.0.0",
     "pytest~=6.2.5",
+]
+docs = [
     "furo~=2022.4.7",                       # Sphinx theme (nice looking, with dark mode)
     "myst-parser>=0.16.1,<=0.17.0",         # 0.17.0 dropped py36 support
     "sphinx-autobuild~=2021.3.14",
     "sphinx-copybutton~=0.5.0",
     "sphinx>=4.3.1,<=4.5.0",                # 4.3.1 avoids 'importlib-metadata>=4.4' dependency present from 4.4.0 onwards
     "sphinx_rtd_theme~=1.0.0",              # Sphinx theme
+]
+build = ["build", "twine"]                  # https://realpython.com/pypi-publish-python-package/#build-your-package
+all = [
+    "starter[lint,test,docs]"               # https://hynek.me/articles/python-recursive-optional-dependencies/
 ]
 
 [project.scripts]
